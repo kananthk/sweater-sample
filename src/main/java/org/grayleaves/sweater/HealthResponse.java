@@ -12,9 +12,9 @@ public class HealthResponse {
 	private static String status = "UP";
 	private static  String targetURL = "no url provided"; 
 
-	public String getStatus() {
-		return status;
-	}
+	//public String getStatus() {
+		//return status;
+//	}
 	public HealthResponse() {
 		buildURL();
 	}
@@ -42,9 +42,8 @@ public class HealthResponse {
 	}
 	
 	
-	public static String getStatus(String url) throws IOException {
+	public  String getStatus() throws IOException {
 		 
-		
         try {
             URL siteURL = new URL(targetURL);
             HttpURLConnection connection = (HttpURLConnection) siteURL
