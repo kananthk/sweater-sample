@@ -56,6 +56,11 @@ public class HealthResponse {
             if (code == 200) {
                 status = "UP" ;
             }
+            else {
+            	
+            	 status = "DOWN" ;
+            	
+            }
         } catch (Exception e) {
             status = "DOWN";
         }
