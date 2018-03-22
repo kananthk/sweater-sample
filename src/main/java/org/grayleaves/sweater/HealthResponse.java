@@ -53,8 +53,10 @@ public class HealthResponse {
             connection.connect();
  
             int code = connection.getResponseCode();
+		 System.out.println("code :"+code);
             if (code == 200) {
                 status = "UP" ;
+		    System.out.println("inside if for ***UP** "+ status);
             }
             else {
             	
