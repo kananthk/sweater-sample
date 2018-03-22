@@ -9,7 +9,7 @@ public class HealthResponse {
 	public static String INSTANCE_KEY = "CF_INSTANCE_INDEX";
 	protected static final String YARN_SERVICE_URL = "YARN_SERVICE_URL";
 	public static String INSTANCE_VALUE = "-1";
-	private static String status = "no status";
+	private static String status = "UP";
 	private static  String targetURL = "no url provided"; 
 
 	public String getStatus() {
