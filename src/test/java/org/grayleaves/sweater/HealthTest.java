@@ -34,11 +34,11 @@ public class HealthTest extends EnvironmentTest {
 		ApiV1App.determineInstance();
 	}
 	
-	@Test
+	/*@Test
 	public void healthReturnsStatusUp() throws IOException {
 		HealthResponse healthResponse = target("v1.1/health").request().get(HealthResponse.class);  
 		assertEquals("UP", healthResponse.getStatus()); 
-	}
+	}*/
 	@Test
 	public void healthReturnsInstanceNumber() {
 		HealthResponse healthResponse = target("v1.1/health").request().get(HealthResponse.class);  
