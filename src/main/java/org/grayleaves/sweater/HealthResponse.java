@@ -17,6 +17,12 @@ public class HealthResponse {
 //	}
 	public HealthResponse() {
 		buildURL();
+		try {
+			getStatus() ;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void setStatus(String status) {
