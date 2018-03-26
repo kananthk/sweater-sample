@@ -1,78 +1,58 @@
 package org.grayleaves.sweater;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import static org.junit.Assert.assertEquals;
 
-public class HealthResponse {
+import java.util.HashMap;
+import java.util.Map;
 
-	public static String INSTANCE_KEY = "CF_INSTANCE_INDEX";
-	protected static final String YARN_SERVICE_URL = "YARN_SERVICE_URL";
-	public static String INSTANCE_VALUE = "-1";
-	private static String status = "UP";
-	private static  String targetURL = "no url provided"; 
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
-	//public String getStatus() {
-		//return status;
-//	}
-	public HealthResponse() {
-		buildURL();
-		try {
-			getStatus() ;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+import org.glassfish.jersey.server.ResourceConfig;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+//FIXME would like to use glassfish for serverless testing without introducing glassfish in prod
+// would need to instantiate a javax.ws.rs.core.Application for testing, 
+// not the subclass org.glassfish.jersey.server.ResourceConfig, as here 
+public class HealthTest extends EnvironmentTest {
+
+	@Override
+	protected Application configure() {
+		return new TestingApiV1App();
 	}
 
-	public void setStatus(String status) {
-	}
-
-	public String getCfInstanceIndex() {
-		return INSTANCE_VALUE;
-	}
-
-	public void setCfInstanceIndex(String cfInstanceIndex) {
-	}
+	@Override
+	@Before
+	public void setUp() throws Exception {
+		super.setUp();
+		Map<String, String> newenv = new HashMap<>();
+		newenv.put(HealthResponse.INSTANCE_KEY, "1");
+		setEnv(newenv); 
+		ApiV1App.determineInstance();
+}
 	
-	private void buildURL() {
-		String url = System.getenv(YARN_SERVICE_URL); 
-		if (url != null) {
-			targetURL = url;
-		}
-		System.out.println("WebYarnService target url: "+targetURL);
+	@Test
+	public void healthReturnsStatusUp() {
+		HealthResponse healthResponse = target("v1/health").request().get(HealthResponse.class);  
+		assertEquals("UP", healthResponse.getStatus()); 
 	}
-	
-	public String getTargetURL() {
-		return targetURL;
+	@Test
+	public void healthReturnsInstanceNumber() {
+		HealthResponse healthResponse = target("v1/health").request().get(HealthResponse.class);  
+		assertEquals("1", healthResponse.getCfInstanceIndex()); 
 	}
-	
-	
-	public  String getStatus() throws IOException {
-		 
-        try {
-            URL siteURL = new URL(targetURL);
-            HttpURLConnection connection = (HttpURLConnection) siteURL
-                    .openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
- 
-            int code = connection.getResponseCode();
-		 System.out.println("code :"+code);
-            if (code == 200) {
-                status = "UP" ;
-		    System.out.println("inside if for ***UP** "+ status);
-            }
-            else {
-            	
-            	 status = "DOWN" ;
-            	
-            }
-        } catch (Exception e) {
-            status = "DOWN";
-        }
-        return status;
+	@Override
+	@After
+	public void tearDown() throws Exception {
+		super.tearDown();
+	}
+
+	@ApplicationPath("/api/*")
+	private class TestingApiV1App extends ResourceConfig {
+	    public TestingApiV1App() {
+	        packages("org.grayleaves.sweater");
+	    }	
     }
-
-	
 }
