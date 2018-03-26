@@ -1,15 +1,15 @@
 ---
 applications:
-- name: sweater-samplexxx
-  host: sweater-samplexxx
+- name: sweater-sampleakk
+  host: sweater-sampleakk
   buildpack: liberty-for-java
   path: target/sweater-sample.war
   memory: 256M
-  instances: 2
+  instances: 1
   timeout: 180
   env: 
     LOG_LEVEL: ERROR
-    YARN_SERVICE_URL: http://yarn.kpsj001.us-west.mybluemix.net/api/v1
+    YARN_SERVICE_URL: http://yarnakk.kpsj001.us-west.mybluemix.net/api/v1
     USE_WEB_YARN_SERVICE: true
     CONNECT_TIMEOUT: 5000
     READ_TIMEOUT: 5000
